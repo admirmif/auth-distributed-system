@@ -22,8 +22,8 @@ This project is a scalable, distributed queue system using **Node.js**, **BullMQ
 ### 1. Clone the repository
 
 ```bash
-git clone https://github.com/admirmif/distributed-queue-system.git
-cd distributed-queue-system
+git clone https://github.com/admirmif/auth-distributed-system.git
+cd auth-distributed-system
 ```
 ### 2. Install dependencies
 
