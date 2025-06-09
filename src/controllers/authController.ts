@@ -7,25 +7,13 @@ class AuthController {
     this.authService = authService
   }
 
-  async register(req: Request, res: Response) {
+   async register(req: Request, res: Response) {
     try {
       const { name, email, password } = req.body;
-      const result = await this.authService.register({ 
-        name, 
-        email, 
-        password, 
-      });
-      res.status(201).json({
-        success: true,
-        data: result.user,
-        token: result.token,
-        message: 'User registered successfully'
-      });
+      const result = await this.authService.register({ name, email, password });
+      res.success({ user: result.user, token: result.token }, 'User registered successfully');
     } catch (error: any) {
-      res.status(400).json({
-        success: false,
-        message: error.message || 'Registration failed'
-      });
+      res.error('Registration failed', error.message);
     }
   }
 
@@ -33,17 +21,9 @@ class AuthController {
     try {
       const { email, password } = req.body;
       const result = await this.authService.login(email, password);
-      res.json({
-        success: true,
-        data: result.user,
-        token: result.token,
-        message: 'Login successful'
-      });
+      res.success({ user: result.user, token: result.token }, 'Login successful');
     } catch (error: any) {
-      res.status(401).json({
-        success: false,
-        message: error.message || 'Login failed'
-      });
+      res.error('Login failed', error.message, 401);
     }
   }
 
@@ -51,16 +31,9 @@ class AuthController {
     try {
       const userId = req.user?.id;
       const user = await this.authService.getCurrentUser(userId);
-      res.json({
-        success: true,
-        data: user,
-        message: 'Current user retrieved successfully'
-      });
+      res.success(user, 'Current user retrieved successfully');
     } catch (error: any) {
-      res.status(error.statusCode || 500).json({
-        success: false,
-        message: error.message || 'Failed to get current user'
-      });
+      res.error('Failed to get current user', error.message, error.statusCode || 500);
     }
   }
 
@@ -69,15 +42,9 @@ class AuthController {
       const userId = req.user?.id;
       const { currentPassword, newPassword } = req.body;
       await this.authService.changePassword(userId, currentPassword, newPassword);
-      res.json({
-        success: true,
-        message: 'Password changed successfully'
-      });
+      res.success(null, 'Password changed successfully');
     } catch (error: any) {
-      res.status(error.statusCode || 400).json({
-        success: false,
-        message: error.message || 'Failed to change password'
-      });
+      res.error('Failed to change password', error.message, error.statusCode || 400);
     }
   }
 
@@ -85,15 +52,9 @@ class AuthController {
     try {
       const { email } = req.body;
       await this.authService.forgotPassword(email);
-      res.json({
-        success: true,
-        message: 'If the email exists, a reset link has been sent'
-      });
+      res.success(null, 'If the email exists, a reset link has been sent');
     } catch (error: any) {
-      res.status(500).json({
-        success: false,
-        message: error.message || 'Failed to process password reset'
-      });
+      res.error('Failed to process password reset', error.message, 500);
     }
   }
 
@@ -101,15 +62,9 @@ class AuthController {
     try {
       const { token, newPassword } = req.body;
       await this.authService.resetPassword(token, newPassword);
-      res.json({
-        success: true,
-        message: 'Password has been reset successfully'
-      });
+      res.success(null, 'Password has been reset successfully');
     } catch (error: any) {
-      res.status(400).json({
-        success: false,
-        message: error.message || 'Failed to reset password'
-      });
+      res.error('Failed to reset password', error.message, 400);
     }
   }
 }
