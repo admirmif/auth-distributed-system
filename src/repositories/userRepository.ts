@@ -21,6 +21,14 @@ class UserRepository {
       });
       return user;
     } catch (error) {
+       this.logger.error({
+        module: 'UserRepository',
+        fn: 'create',
+        args: {
+          ...data,
+        },
+        err: error,
+      })
       this.logger.error(`Error creating user: ${JSON.stringify(data)}`, error);
       throw error;
     }
@@ -33,7 +41,14 @@ class UserRepository {
       
       });
     } catch (error) {
-      this.logger.error(`Error finding user with id: ${id}`, error);
+       this.logger.error({
+        module: 'UserRepository',
+        fn: 'findById',
+        args: {
+          id,
+        },
+        err: error,
+      })
       throw error;
     }
   }
@@ -45,7 +60,14 @@ class UserRepository {
        
       });
     } catch (error) {
-      this.logger.error(`Error finding user with email: ${email}`, error);
+       this.logger.error({
+        module: 'UserRepository',
+        fn: 'findByEmail',
+        args: {
+          email,
+        },
+        err: error,
+      })
       throw error;
     }
   }
@@ -63,7 +85,14 @@ class UserRepository {
        
       });
     } catch (error) {
-      this.logger.error(`Error updating user with id: ${id}`, error);
+       this.logger.error({
+        module: 'UserRepository',
+        fn: 'update',
+        args: {
+          id,
+        },
+        err: error,
+      })
       throw error;
     }
   }
@@ -74,7 +103,14 @@ class UserRepository {
         where: { id }
       });
     } catch (error) {
-      this.logger.error(`Error deleting user with id: ${id}`, error);
+       this.logger.error({
+        module: 'UserRepository',
+        fn: 'delete',
+        args: {
+          id,
+        },
+        err: error,
+      })
       throw error;
     }
   }
@@ -88,7 +124,14 @@ async updatePassword(id: number, newPassword: string): Promise<any> {
       data: { password: hashedPassword }
     });
   } catch (error) {
-    this.logger.error(`Error updating password for user ${id}`, error);
+     this.logger.error({
+        module: 'UserRepository',
+        fn: 'updatePassword',
+        args: {
+          id,
+        },
+        err: error,
+      })
     throw error;
   }
 }
@@ -103,7 +146,15 @@ async setPasswordResetToken(email: string, token: string, expiresAt: Date): Prom
       }
     });
   } catch (error) {
-    this.logger.error(`Error setting reset token for ${email}`, error);
+     this.logger.error({
+        module: 'UserRepository',
+        fn: 'setPasswordResetToken',
+        args: {
+          email,
+          token,
+        },
+        err: error,
+      })
     throw error;
   }
 }
@@ -117,7 +168,14 @@ async getUserByResetToken(token: string): Promise<any | null> {
       }
     });
   } catch (error) {
-    this.logger.error(`Error finding user by reset token`, error);
+     this.logger.error({
+        module: 'UserRepository',
+        fn: 'getUserByResetToken',
+        args: {
+          token,
+        },
+        err: error,
+      })
     throw error;
   }
 }
@@ -132,7 +190,14 @@ async clearResetToken(id: number): Promise<any> {
       }
     });
   } catch (error) {
-    this.logger.error(`Error clearing reset token for user ${id}`, error);
+     this.logger.error({
+        module: 'UserRepository',
+        fn: 'clearResetToken',
+        args: {
+          id,
+        },
+        err: error,
+      })
     throw error;
   }
 }

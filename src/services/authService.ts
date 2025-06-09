@@ -49,7 +49,11 @@ class AuthService {
 
       return { user, token };
     } catch (error: any) {
-      this.logger.error(`Registration error: ${error.message}`, { error });
+      this.logger.error({
+        module: 'AuthService',
+        fn: 'register',
+        err: error,
+      })
       throw { 
         message: error.message || 'Registration failed',
         statusCode: error.statusCode || 500 
@@ -81,7 +85,14 @@ class AuthService {
 
       return { user, token };
     } catch (error: any) {
-      this.logger.error(`Login error: ${error.message}`, { error });
+      this.logger.error({
+        module: 'AuthService',
+        fn: 'login',
+        args: {
+          email,
+        },
+        err: error,
+      })
       throw { 
         message: error.message || 'Login failed',
         statusCode: error.statusCode || 500 
@@ -108,7 +119,14 @@ class AuthService {
 
       return user;
     } catch (error: any) {
-      this.logger.error(`Get current user error: ${error.message}`, { error });
+      this.logger.error({
+        module: 'AuthService',
+        fn: 'getCurrentUser',
+        args: {
+          userId,
+        },
+        err: error,
+      })
       throw { 
         message: error.message || 'Failed to get current user',
         statusCode: error.statusCode || 500 
@@ -138,7 +156,14 @@ class AuthService {
       await this.userRepository.updatePassword(user.id, newPassword);
       this.logger.info(`Password changed successfully for user: ${userId}`);
     } catch (error: any) {
-      this.logger.error(`Change password error: ${error.message}`, { error });
+      this.logger.error({
+        module: 'AuthService',
+        fn: 'changePassword',
+        args: {
+          userId,
+        },
+        err: error,
+      })
       throw { 
         message: error.message || 'Failed to change password',
         statusCode: error.statusCode || 500 
@@ -169,7 +194,14 @@ class AuthService {
       
       this.logger.info(`Password reset email will be sent to: ${email}`);
     } catch (error: any) {
-      this.logger.error(`Forgot password error: ${error.message}`, { error });
+       this.logger.error({
+        module: 'AuthService',
+        fn: 'forgotPassword',
+        args: {
+          email,
+        },
+        err: error,
+      })
       throw { 
         message: 'Failed to process password reset',
         statusCode: 500 
@@ -193,7 +225,14 @@ class AuthService {
       
       this.logger.info(`Password reset successfully for user: ${user.email}`);
     } catch (error: any) {
-      this.logger.error(`Reset password error: ${error.message}`, { error });
+      this.logger.error({
+        module: 'AuthService',
+        fn: 'resetPassword',
+        args: {
+          token,
+        },
+        err: error,
+      })
       throw { 
         message: error.message || 'Failed to reset password',
         statusCode: error.statusCode || 500 

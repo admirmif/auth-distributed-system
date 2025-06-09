@@ -33,7 +33,14 @@ export class EmailService {
       await this.transporter.sendMail(mailOptions);
       this.logger.info(`Welcome email sent to ${email}`);
     } catch (error: any) {
-      this.logger.error(`Failed to send welcome email to ${email}: ${error.message}`);
+      this.logger.error({
+        module: 'EmailService',
+        fn: 'sendWelcomeEmail',
+        args: {
+          email,
+        },
+        err: error,
+      })
       throw new Error('Email sending failed');
     }
   }
@@ -54,7 +61,14 @@ export class EmailService {
       await this.transporter.sendMail(mailOptions);
       this.logger.info(`Password reset email sent to ${email}`);
     } catch (error: any) {
-      this.logger.error(`Failed to send password reset to ${email}: ${error.message}`);
+      this.logger.error({
+        module: 'EmailService',
+        fn: 'sendPasswordResetEmail',
+        args: {
+          email,
+        },
+        err: error,
+      })
       throw new Error('Email sending failed');
     }
   }
